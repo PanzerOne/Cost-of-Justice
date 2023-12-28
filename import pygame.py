@@ -30,13 +30,13 @@ class Character:
 
 # Initialize the screen
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Escape from Monotony")
+pygame.display.set_caption("Cost of Justice")
 
 # Initialize font
 font = pygame.font.Font(None, FONT_SIZE)
 
 # Create a character
-player = Character("John Doe", 35, "Office Worker", 50)
+player = Character("Craig", 38, "Accountant", 50)
 
 # Game loop
 running = True
