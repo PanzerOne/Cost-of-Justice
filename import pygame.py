@@ -1,108 +1,103 @@
-import pygame
-import sys
 import random
 
-# Initialize Pygame
-pygame.init()
-
-# Constants
-WIDTH, HEIGHT = 800, 600
-FONT_SIZE = 24
-FPS = 30
-
-# Colors
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-
-# Define the main character class
+# Class for the game character
 class Character:
-    def __init__(self, name, age, job, happiness):
+    def __init__(self, name, health):
         self.name = name
-        self.age = age
-        self.job = job
-        self.happiness = happiness
+        self.health = health
+        self.inventory = []
 
-    def change_job(self, new_job):
-        self.job = new_job
+    def is_defeated(self):
+        return self.health <= 0
 
-    def boost_happiness(self):
-        self.happiness += random.randint(1, 5)
+    def use_item(self):
+        if self.inventory:
+            item = self.inventory.pop()
+            self.health += item
+            print(f"{self.name} uses a health potion and recovers {item} health!")
+        else:
+            print(f"{self.name} has no items to use.")
 
-# define the Antagonist Class 
-class Antagonist:
-    def __init__(self,name,strength,influence):
-        self.name = name
-        self.strength = strength
-        self.influence = influence
+# Special Abilities
+def craig_special_ability(target):
+    print("Craig uses his Audit Smash!")
+    damage = random.randint(20, 30)
+    target.health -= damage
+    print(f"Inflation loses {damage} health due to the Audit Smash!")
 
-    def increase_strength(self):
-        self.strength += random.randint(1,3)
+def inflation_special_ability(target):
+    print("Inflation uses Price Surge!")
+    damage = random.randint(20, 30)
+    target.health -= damage
+    print(f"Craig loses {damage} health due to the Price Surge!")
 
-    def weaken(self, amount):
-        self.strength -= amount
-        if self.strength < 0:
-            self.strength = 0
+# Class for the game stages
+class GameStage:
+    def __init__(self, craig, inflation):
+        self.craig = craig
+        self.inflation = inflation
 
-# Initialize the screen
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Cost of Justice")
+    def introduction(self):
+        print("Craig, tired of his dead-end accounting job, becomes a vigilante at night.")
+        print("Inflation, the ever-present antagonist, looms over the city.\n")
 
-# Initialize font
-font = pygame.font.Font(None, FONT_SIZE)
+    def dialogue(self):
+        dialogues = [
+            "Craig: Time to balance the books, Inflation!",
+            "Inflation: You can't audit me, Craig. I'm everywhere!",
+            "Craig: Let's see if your numbers add up!",
+            "Inflation: You'll need more than a calculator to defeat me!",
+            "Craig: Your economic policies end tonight, Inflation!",
+            "Inflation: Haha, Craig! You're just a tiny blip in my financial plans!"
+        ]
+        print(random.choice(dialogues))
 
-# Create a character
-player = Character("Craig", 38, "Accountant", 50)
+    def fight(self):
+        while not self.craig.is_defeated() and not self.inflation.is_defeated():
+            self.dialogue()
 
-# Game loop
-running = True
-clock = pygame.time.Clock()
+            if random.random() < 0.2:  # 20% chance for special ability
+                craig_special_ability(self.inflation)
+            else:
+                damage = random.randint(5, 15)
+                self.inflation.health -= damage
+                print(f"Craig attacks! Inflation loses {damage} health.")
 
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-            break
+            if self.inflation.is_defeated():
+                print("Inflation is defeated! The city's economy stabilizes!")
+                break
 
-    screen.fill(WHITE)
+            if random.random() < 0.2:  # 20% chance for special ability
+                inflation_special_ability(self.craig)
+            else:
+                damage = random.randint(5, 15)
+                self.craig.health -= damage
+                print(f"Inflation strikes back! Craig loses {damage} health.")
 
-    # Display character information
-    info_text = f"Name: {player.name}, Age: {player.age}, Job: {player.job}, Happiness: {player.happiness}"
-    text_render = font.render(info_text, True, BLACK)
-    screen.blit(text_render, (20, 20))
+            if self.craig.is_defeated():
+                print("Craig is defeated! Fiscal chaos reigns!")
+                break
 
-    # Display game instructions and options
-    instructions = "Choose an action:\n1 - Change Job\n2 - Fight Inflation\n3 - Go on Vacation\n4 - Quit"
-    instructions_render = font.render(instructions, True, BLACK)
-    screen.blit(instructions_render, (20, 60))
+            if random.random() < 0.1:  # 10% chance for random event
+                self.random_event()
 
-    pygame.display.flip()
+    def random_event(self):
+        events = [
+            "A mysterious benefactor drops a health potion for Craig!",
+            "Inflation's influence wanes momentarily, reducing its attack power!"
+        ]
+        event = random.choice(events)
+        print(event)
+        if "health potion" in event:
+            self.craig.inventory.append(20)  # Adds 20 health potion
+        elif "reducing its attack power" in event:
+            inflation_special_ability(self.craig)  # Reduces the effect of Inflation's next attack
 
-    action = input("You have to take a decision!! What you going to do chico?: ")
+# Creating characters
+craig = Character("Craig", 100)
+inflation = Character("Inflation", 100)
 
-    if action == '1':
-        new_job = input("Enter your new job: ")
-        player.change_job(new_job)
-        player.boost_happiness()
-        print(f"You are now a {new_job}. Your happiness increased!Enjoy the temporary high")
-    elif action == '2':
-        inflation_damage = random.randint(10, 30)
-        player.happiness -= inflation_damage
-        print(f"You tried to fight Inflation but lost {inflation_damage} happiness points!")
-    elif action == '3':
-        vacation_days = random.randint(1, 7)
-        player.happiness += vacation_days * 5
-        print(f"You went on vacation for {vacation_days} days and returned happier!")
-    elif action == '4':
-        print("Thanks for playing!You Quit like everything else you do!")
-        running = False
-    else:
-        print("Invalid choice. Please choose a valid option.")
-
-    if player.happiness <= 0:
-        print("You're too unhappy to continue. Game over!")
-        running = False
-
-    pygame.time.delay(1000)
-
-pygame.quit()
-sys.exit()
+# Starting the game
+game = GameStage(craig, inflation)
+game.introduction()
+game.fight()
