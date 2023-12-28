@@ -16,8 +16,17 @@ class Character:
             item = self.inventory.pop()
             self.health += item
             print(f"{self.name} uses a health potion and recovers {item} health!")
+            time.sleep(1)
+            print(random.choice(self.item_use_dialogues()))
         else:
             print(f"{self.name} has no items to use.")
+
+    def item_use_dialogues(self):
+        return [
+            "Craig: A little boost never hurts!",
+            "Craig: Time for a quick recharge!",
+            "Craig: Back in the fight!"
+        ]
 
 # Special Abilities
 def craig_special_ability(target):
@@ -26,6 +35,14 @@ def craig_special_ability(target):
     damage = random.randint(20, 30)
     target.health -= damage
     print(f"Inflation loses {damage} health due to the Audit Smash!")
+    print(random.choice(craig_special_ability_dialogues()))
+
+def craig_special_ability_dialogues():
+    return [
+        "Craig: Take that, Inflation!",
+        "Craig: Audit Smash, for fiscal responsibility!",
+        "Craig: This will leave a dent in your budget!"
+    ]
 
 def inflation_special_ability(target):
     print("Inflation uses Price Surge!")
@@ -33,6 +50,14 @@ def inflation_special_ability(target):
     damage = random.randint(20, 30)
     target.health -= damage
     print(f"Craig loses {damage} health due to the Price Surge!")
+    print(random.choice(inflation_special_ability_dialogues()))
+
+def inflation_special_ability_dialogues():
+    return [
+        "Inflation: Feel the power of rising prices!",
+        "Inflation: This surge will destabilize your assets!",
+        "Inflation: Economic chaos is my game!"
+    ]
 
 # Class for the game stages
 class GameStage:
@@ -46,21 +71,8 @@ class GameStage:
         print("Inflation, the ever-present antagonist, looms over the city.\n")
         time.sleep(2)
 
-    def dialogue(self):
-        dialogues = [
-            "Craig: Time to balance the books, Inflation!",
-            "Inflation: You can't audit me, Craig. I'm everywhere!",
-            "Craig: Let's see if your numbers add up!",
-            "Inflation: You'll need more than a calculator to defeat me!",
-            "Craig: Your economic policies end tonight, Inflation!",
-            "Inflation: Haha, Craig! You're just a tiny blip in my financial plans!"
-        ]
-        print(random.choice(dialogues))
-        time.sleep(2)
-
     def fight(self):
         while not self.craig.is_defeated() and not self.inflation.is_defeated():
-            self.dialogue()
             self.player_choice()
             time.sleep(1)
             self.inflation_turn()
@@ -78,6 +90,7 @@ class GameStage:
             damage = random.randint(5, 15)
             self.inflation.health -= damage
             print(f"Craig attacks! Inflation loses {damage} health.")
+            print(random.choice(attack_dialogues()))
         elif choice == "2":
             craig_special_ability(self.inflation)
         elif choice == "3":
@@ -97,23 +110,25 @@ class GameStage:
             damage = random.randint(5, 15)
             self.craig.health -= damage
             print(f"Inflation strikes back! Craig loses {damage} health.")
+            print(random.choice(inflation_attack_dialogues()))
 
         if self.craig.is_defeated():
             print("Craig is defeated! Fiscal chaos reigns!")
         time.sleep(1)
 
-    def random_event(self):
-        events = [
-            "A mysterious benefactor drops a health potion for Craig!",
-            "Inflation's influence wanes momentarily, reducing its attack power!"
-        ]
-        event = random.choice(events)
-        print(event)
-        if "health potion" in event:
-            self.craig.inventory.append(20)  # Adds 20 health potion
-        elif "reducing its attack power" in event:
-            inflation_special_ability(self.craig)  # Reduces the effect of Inflation's next attack
-        time.sleep(1)
+def attack_dialogues():
+    return [
+        "Craig: Take that!",
+        "Craig: How's that for accounting!",
+        "Craig: You can't escape justice!"
+    ]
+
+def inflation_attack_dialogues():
+    return [
+        "Inflation: You can't stop the economic tide!",
+        "Inflation: My power grows with every strike!",
+        "Inflation: You're no match for market forces!"
+    ]
 
 # Creating characters
 craig = Character("Craig", 100)
