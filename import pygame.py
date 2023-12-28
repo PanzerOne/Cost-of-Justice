@@ -48,7 +48,12 @@ class GameStage:
 
     def dialogue(self):
         dialogues = [
-            # ... (existing dialogues)
+            "Craig: Time to balance the books, Inflation!",
+            "Inflation: You can't audit me, Craig. I'm everywhere!",
+            "Craig: Let's see if your numbers add up!",
+            "Inflation: You'll need more than a calculator to defeat me!",
+            "Craig: Your economic policies end tonight, Inflation!",
+            "Inflation: Haha, Craig! You're just a tiny blip in my financial plans!"
         ]
         print(random.choice(dialogues))
         time.sleep(2)
@@ -98,7 +103,16 @@ class GameStage:
         time.sleep(1)
 
     def random_event(self):
-        # ... (existing random event code)
+        events = [
+            "A mysterious benefactor drops a health potion for Craig!",
+            "Inflation's influence wanes momentarily, reducing its attack power!"
+        ]
+        event = random.choice(events)
+        print(event)
+        if "health potion" in event:
+            self.craig.inventory.append(20)  # Adds 20 health potion
+        elif "reducing its attack power" in event:
+            inflation_special_ability(self.craig)  # Reduces the effect of Inflation's next attack
         time.sleep(1)
 
 # Creating characters
@@ -109,4 +123,3 @@ inflation = Character("Inflation", 100)
 game = GameStage(craig, inflation)
 game.introduction()
 game.fight()
-
