@@ -1,4 +1,5 @@
 import random
+import time
 
 # Class for the game character
 class Character:
@@ -21,12 +22,14 @@ class Character:
 # Special Abilities
 def craig_special_ability(target):
     print("Craig uses his Audit Smash!")
+    time.sleep(1)
     damage = random.randint(20, 30)
     target.health -= damage
     print(f"Inflation loses {damage} health due to the Audit Smash!")
 
 def inflation_special_ability(target):
     print("Inflation uses Price Surge!")
+    time.sleep(1)
     damage = random.randint(20, 30)
     target.health -= damage
     print(f"Craig loses {damage} health due to the Price Surge!")
@@ -39,24 +42,24 @@ class GameStage:
 
     def introduction(self):
         print("Craig, tired of his dead-end accounting job, becomes a vigilante at night.")
+        time.sleep(2)
         print("Inflation, the ever-present antagonist, looms over the city.\n")
+        time.sleep(2)
 
     def dialogue(self):
         dialogues = [
-            "Craig: Time to balance the books, Inflation!",
-            "Inflation: You can't audit me, Craig. I'm everywhere!",
-            "Craig: Let's see if your numbers add up!",
-            "Inflation: You'll need more than a calculator to defeat me!",
-            "Craig: Your economic policies end tonight, Inflation!",
-            "Inflation: Haha, Craig! You're just a tiny blip in my financial plans!"
+            # ... (existing dialogues)
         ]
         print(random.choice(dialogues))
+        time.sleep(2)
 
     def fight(self):
         while not self.craig.is_defeated() and not self.inflation.is_defeated():
             self.dialogue()
             self.player_choice()
+            time.sleep(1)
             self.inflation_turn()
+            time.sleep(2)
 
     def player_choice(self):
         print("\nChoose your action:")
@@ -64,6 +67,7 @@ class GameStage:
         print("2. Use Special Ability")
         print("3. Use Item")
         choice = input("Enter your choice (1, 2, or 3): ")
+        time.sleep(1)
 
         if choice == "1":
             damage = random.randint(5, 15)
@@ -75,13 +79,14 @@ class GameStage:
             self.craig.use_item()
         else:
             print("Invalid choice. Craig hesitates...")
+        time.sleep(1)
 
     def inflation_turn(self):
         if self.inflation.is_defeated():
             print("Inflation is defeated! The city's economy stabilizes!")
             return
 
-        if random.random() < 0.2:  # 20% chance for special ability
+        if random.random() < 0.2:
             inflation_special_ability(self.craig)
         else:
             damage = random.randint(5, 15)
@@ -90,18 +95,11 @@ class GameStage:
 
         if self.craig.is_defeated():
             print("Craig is defeated! Fiscal chaos reigns!")
+        time.sleep(1)
 
     def random_event(self):
-        events = [
-            "A mysterious benefactor drops a health potion for Craig!",
-            "Inflation's influence wanes momentarily, reducing its attack power!"
-        ]
-        event = random.choice(events)
-        print(event)
-        if "health potion" in event:
-            self.craig.inventory.append(20)  # Adds 20 health potion
-        elif "reducing its attack power" in event:
-            inflation_special_ability(self.craig)  # Reduces the effect of Inflation's next attack
+        # ... (existing random event code)
+        time.sleep(1)
 
 # Creating characters
 craig = Character("Craig", 100)
@@ -111,3 +109,4 @@ inflation = Character("Inflation", 100)
 game = GameStage(craig, inflation)
 game.introduction()
 game.fight()
+
