@@ -55,31 +55,41 @@ class GameStage:
     def fight(self):
         while not self.craig.is_defeated() and not self.inflation.is_defeated():
             self.dialogue()
+            self.player_choice()
+            self.inflation_turn()
 
-            if random.random() < 0.2:  # 20% chance for special ability
-                craig_special_ability(self.inflation)
-            else:
-                damage = random.randint(5, 15)
-                self.inflation.health -= damage
-                print(f"Craig attacks! Inflation loses {damage} health.")
+    def player_choice(self):
+        print("\nChoose your action:")
+        print("1. Attack")
+        print("2. Use Special Ability")
+        print("3. Use Item")
+        choice = input("Enter your choice (1, 2, or 3): ")
 
-            if self.inflation.is_defeated():
-                print("Inflation is defeated! The city's economy stabilizes!")
-                break
+        if choice == "1":
+            damage = random.randint(5, 15)
+            self.inflation.health -= damage
+            print(f"Craig attacks! Inflation loses {damage} health.")
+        elif choice == "2":
+            craig_special_ability(self.inflation)
+        elif choice == "3":
+            self.craig.use_item()
+        else:
+            print("Invalid choice. Craig hesitates...")
 
-            if random.random() < 0.2:  # 20% chance for special ability
-                inflation_special_ability(self.craig)
-            else:
-                damage = random.randint(5, 15)
-                self.craig.health -= damage
-                print(f"Inflation strikes back! Craig loses {damage} health.")
+    def inflation_turn(self):
+        if self.inflation.is_defeated():
+            print("Inflation is defeated! The city's economy stabilizes!")
+            return
 
-            if self.craig.is_defeated():
-                print("Craig is defeated! Fiscal chaos reigns!")
-                break
+        if random.random() < 0.2:  # 20% chance for special ability
+            inflation_special_ability(self.craig)
+        else:
+            damage = random.randint(5, 15)
+            self.craig.health -= damage
+            print(f"Inflation strikes back! Craig loses {damage} health.")
 
-            if random.random() < 0.1:  # 10% chance for random event
-                self.random_event()
+        if self.craig.is_defeated():
+            print("Craig is defeated! Fiscal chaos reigns!")
 
     def random_event(self):
         events = [
