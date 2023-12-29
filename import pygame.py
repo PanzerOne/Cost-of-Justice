@@ -2,7 +2,8 @@ import random
 import time
 import sys
 
-def slow_typing(text, speed=0.06):
+
+def slow_typing(text, speed=0.04):
     for char in text:
         sys.stdout.write(char)
         sys.stdout.flush()
