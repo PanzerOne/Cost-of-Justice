@@ -84,8 +84,8 @@ def inflation_special_ability(target):
 def inflation_special_ability_dialogues():
     return [
         "Inflation: Feel the power of rising prices!",
-        "Inflation: This surge will destabilize your assets!",
-        "Inflation: Economic chaos is my game!"
+        "Inflation: Ever heard of the great depression?",
+        "Inflation: Time for your credit score to plummet!"
     ]
 
 class GameStage:
