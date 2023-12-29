@@ -2,7 +2,7 @@ import random
 import time
 import sys
 
-def slow_typing(text, speed=0.05):
+def slow_typing(text, speed=0.06):
     for char in text:
         sys.stdout.write(char)
         sys.stdout.flush()
@@ -113,14 +113,14 @@ class GameStage:
         slow_typing("\nChoose your action:")
         slow_typing("1. Attack")
         slow_typing("2. Use Special Ability")
-        slow_typing("3. Use Item")
+        slow_typing("3. Use Calculator")
         choice = input("Enter your choice (1, 2, or 3): ")
         time.sleep(1)
 
         if choice == "1":
             damage = random.randint(5, 15)
             self.inflation.health -= damage
-            slow_typing(f"Craig attacks! Inflation loses {damage} health.")
+            slow_typing(f"Craig attacks! Inflation drops {damage} health.")
             slow_typing(random.choice(attack_dialogues()))
         elif choice == "2":
             craig_special_ability(self.inflation)
@@ -132,7 +132,7 @@ class GameStage:
 
     def inflation_turn(self):
         if self.inflation.is_defeated():
-            slow_typing("Inflation is defeated! The city's economy stabilizes!")
+            slow_typing("Inflation is defeated! The city's economy stabilizes!Shunak seen crying in a corner")
             return
 
         if random.random() < 0.2:
@@ -144,14 +144,14 @@ class GameStage:
             slow_typing(random.choice(inflation_attack_dialogues()))
 
         if self.craig.is_defeated():
-            slow_typing("Craig is defeated! Fiscal chaos reigns!")
+            slow_typing("Craig is defeated! Fiscal chaos reigns!Tories are getting hard! ")
         time.sleep(1)
 
 def attack_dialogues():
     return [
         "Craig: Take that!",
         "Craig: How's that for accounting!",
-        "Craig: You can't escape justice!"
+        "Craig: You can't escape justice or Taxes! "
     ]
 
 def inflation_attack_dialogues():
