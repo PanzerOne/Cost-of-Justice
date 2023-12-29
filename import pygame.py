@@ -1,11 +1,46 @@
 import random
 import time
+import sys
 
-# Class for the game character
+def slow_typing(text, speed=0.05):
+    for char in text:
+        sys.stdout.write(char)
+        sys.stdout.flush()
+        time.sleep(speed)
+    print()
+
+# ASCII Art for the game title
+game_title_art = """
+  ______   ______   _______   ______   __    __  ________  _______  
+ /      \ /      \ /       \ /      \ /  |  /  |/        |/       \ 
+/$$$$$$  |$$$$$$  |$$$$$$$  |$$$$$$  |$$ |  $$ |$$$$$$$$/ $$$$$$$  |
+$$ |  $$ |$$ |  $$ |$$ |  $$ |$$ |  $$ |$$ |  $$ |$$ |__    $$ |__$$ |
+$$ |  $$ |$$ |  $$ |$$ |  $$ |$$ |  $$ |$$ |  $$ |$$    |   $$    $$< 
+$$ |  $$ |$$ |  $$ |$$ |  $$ |$$ |  $$ |$$ |  $$ |$$$$$/    $$$$$$$  |
+$$ \__$$ |$$ \__$$ |$$ |__$$ |$$ \__$$ |$$ \__$$ |$$ |_____ $$ |  $$ |
+$$    $$/ $$    $$/ $$    $$/ $$    $$/ $$    $$/ $$       |$$ |  $$ |
+ $$$$$$/   $$$$$$/  $$$$$$$/   $$$$$$/   $$$$$$/  $$$$$$$$/ $$/   $$/ 
+                                                                      
+"""
+
+# ASCII Art for characters
+craig_art = """
+  C
+ /|\\
+ / \\
+"""
+inflation_art = """
+   __
+  /  \\
+ |    |
+  \\__/
+"""
+
 class Character:
-    def __init__(self, name, health):
+    def __init__(self, name, health, art):
         self.name = name
         self.health = health
+        self.art = art
         self.inventory = []
 
     def is_defeated(self):
@@ -15,11 +50,11 @@ class Character:
         if self.inventory:
             item = self.inventory.pop()
             self.health += item
-            print(f"{self.name} uses a health potion and recovers {item} health!")
+            slow_typing(f"{self.name} uses a health potion and recovers {item} health!")
             time.sleep(1)
-            print(random.choice(self.item_use_dialogues()))
+            slow_typing(random.choice(self.item_use_dialogues()))
         else:
-            print(f"{self.name} has no items to use.")
+            slow_typing(f"{self.name} has no items to use.")
 
     def item_use_dialogues(self):
         return [
@@ -28,14 +63,13 @@ class Character:
             "Craig: Back in the fight!"
         ]
 
-# Special Abilities
 def craig_special_ability(target):
-    print("Craig uses his Audit Smash!")
+    slow_typing("Craig uses his Audit Smash!")
     time.sleep(1)
     damage = random.randint(20, 30)
     target.health -= damage
-    print(f"Inflation loses {damage} health due to the Audit Smash!")
-    print(random.choice(craig_special_ability_dialogues()))
+    slow_typing(f"Inflation loses {damage} health due to the Audit Smash!")
+    slow_typing(random.choice(craig_special_ability_dialogues()))
 
 def craig_special_ability_dialogues():
     return [
@@ -45,12 +79,12 @@ def craig_special_ability_dialogues():
     ]
 
 def inflation_special_ability(target):
-    print("Inflation uses Price Surge!")
+    slow_typing("Inflation uses Price Surge!")
     time.sleep(1)
     damage = random.randint(20, 30)
     target.health -= damage
-    print(f"Craig loses {damage} health due to the Price Surge!")
-    print(random.choice(inflation_special_ability_dialogues()))
+    slow_typing(f"Craig loses {damage} health due to the Price Surge!")
+    slow_typing(random.choice(inflation_special_ability_dialogues()))
 
 def inflation_special_ability_dialogues():
     return [
@@ -59,16 +93,18 @@ def inflation_special_ability_dialogues():
         "Inflation: Economic chaos is my game!"
     ]
 
-# Class for the game stages
 class GameStage:
     def __init__(self, craig, inflation):
         self.craig = craig
         self.inflation = inflation
 
     def introduction(self):
-        print("Craig, tired of his dead-end accounting job, becomes a vigilante at night.")
+        slow_typing("Craig, tired of his dead-end accounting job, becomes a vigilante at night.")
         time.sleep(2)
-        print("Inflation, the ever-present antagonist, looms over the city.\n")
+        slow_typing("Inflation, the ever-present antagonist, looms over the city.\n")
+        time.sleep(2)
+        slow_typing(craig_art)
+        slow_typing(inflation_art)
         time.sleep(2)
 
     def fight(self):
@@ -79,29 +115,29 @@ class GameStage:
             time.sleep(2)
 
     def player_choice(self):
-        print("\nChoose your action:")
-        print("1. Attack")
-        print("2. Use Special Ability")
-        print("3. Use Item")
+        slow_typing("\nChoose your action:")
+        slow_typing("1. Attack")
+        slow_typing("2. Use Special Ability")
+        slow_typing("3. Use Item")
         choice = input("Enter your choice (1, 2, or 3): ")
         time.sleep(1)
 
         if choice == "1":
             damage = random.randint(5, 15)
             self.inflation.health -= damage
-            print(f"Craig attacks! Inflation loses {damage} health.")
-            print(random.choice(attack_dialogues()))
+            slow_typing(f"Craig attacks! Inflation loses {damage} health.")
+            slow_typing(random.choice(attack_dialogues()))
         elif choice == "2":
             craig_special_ability(self.inflation)
         elif choice == "3":
             self.craig.use_item()
         else:
-            print("Invalid choice. Craig hesitates...")
+            slow_typing("Invalid choice. Craig hesitates...")
         time.sleep(1)
 
     def inflation_turn(self):
         if self.inflation.is_defeated():
-            print("Inflation is defeated! The city's economy stabilizes!")
+            slow_typing("Inflation is defeated! The city's economy stabilizes!")
             return
 
         if random.random() < 0.2:
@@ -109,11 +145,11 @@ class GameStage:
         else:
             damage = random.randint(5, 15)
             self.craig.health -= damage
-            print(f"Inflation strikes back! Craig loses {damage} health.")
-            print(random.choice(inflation_attack_dialogues()))
+            slow_typing(f"Inflation strikes back! Craig loses {damage} health.")
+            slow_typing(random.choice(inflation_attack_dialogues()))
 
         if self.craig.is_defeated():
-            print("Craig is defeated! Fiscal chaos reigns!")
+            slow_typing("Craig is defeated! Fiscal chaos reigns!")
         time.sleep(1)
 
 def attack_dialogues():
@@ -131,10 +167,11 @@ def inflation_attack_dialogues():
     ]
 
 # Creating characters
-craig = Character("Craig", 100)
-inflation = Character("Inflation", 100)
+craig = Character("Craig", 100, craig_art)
+inflation = Character("Inflation", 100, inflation_art)
 
 # Starting the game
+slow_typing(game_title_art)
 game = GameStage(craig, inflation)
 game.introduction()
 game.fight()
