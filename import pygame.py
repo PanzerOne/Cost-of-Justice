@@ -68,8 +68,8 @@ def craig_special_ability(target):
 
 def craig_special_ability_dialogues():
     return [
-        "Craig: Take that, Inflation!",
-        "Craig: Audit Smash, for fiscal responsibility!",
+        "Craig: Feel the wrath of my calculator!",
+        "Craig: I've got a receipt for that!",
         "Craig: This will leave a dent in your budget!"
     ]
 
